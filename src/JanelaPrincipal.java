@@ -1,13 +1,17 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+
 
 public class JanelaPrincipal extends JFrame implements ActionListener {
 
@@ -22,6 +26,7 @@ public class JanelaPrincipal extends JFrame implements ActionListener {
     private JButton buttonJogar;
     private JButton buttonLimpar;
     private JButton buttonSalvar;
+    private JButton buttonRecuperar;
     
     private JTextArea areaJogo;
     private JScrollPane scrollJogo;
@@ -53,7 +58,10 @@ public class JanelaPrincipal extends JFrame implements ActionListener {
         
         buttonSalvar = new JButton("Salvar");
         buttonSalvar.addActionListener(this);
-        buttonSalvar.setEnabled(false);
+        //buttonSalvar.setEnabled(false);
+        
+        buttonRecuperar = new JButton("Recuperar");
+        buttonRecuperar.addActionListener(this);
         
         areaJogo = new JTextArea(30,30); //linhas e colunas
         areaJogo.setEditable(false);
@@ -71,6 +79,7 @@ public class JanelaPrincipal extends JFrame implements ActionListener {
         panel.add(buttonJogar);
         panel.add(buttonLimpar);
         panel.add(buttonSalvar);
+        panel.add(buttonRecuperar);
         panel.add(scrollJogo);
         add(panel);
     }
@@ -120,6 +129,19 @@ public class JanelaPrincipal extends JFrame implements ActionListener {
         jogo = null;
     }
     
+    private void salvarJogo() {
+    	SerializadorObj sz = new SerializadorObj(new File("JogoDado.ser"));
+    	sz.serializar(jogo);
+    	areaJogo.append("Jogo Salvo");
+    	//JOptionPane.showMessageDialog(areaJogo, "Jogo Salvo");
+    }
+    
+   /*private void recuperarJogo() {
+    	SerializadorObj s = new SerializadorObj("JogoDado.ser");
+    	JogoDado j = (JogoDado)s.desseralizar();
+		j.setStatus(StatusEnum.ANDAMENTO);
+    }*/
+    
     private void limparArea() {
         areaJogo.setText(null);
     }
@@ -131,6 +153,12 @@ public class JanelaPrincipal extends JFrame implements ActionListener {
         }
         else if(e.getSource() == buttonJogar) {
             jogar();
+        }
+        else if(e.getSource() == buttonSalvar) {
+            salvarJogo();
+        }
+        else if(e.getSource() == buttonRecuperar) {
+            //recuperarJogo();
         }
         else {
             limparArea();
